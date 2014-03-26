@@ -2,32 +2,46 @@
 <html ng-app="adjure">
 <head>
 	<title>Adjure - rest api testing</title>
-</head>
-<body>
+	<style>
+		form {
+			display: block;
+			padding: 10px;
+			border: 1px solid #000;
+			float: left;
+			margin: 10px;
+		}
 
-<form ng-controller="adjureFormCtrl" ng-submit="submit()">
-	<label>
-		Method
-		<select ng-model="form.method">
-			<option value="POST">POST</option>
-			<option value="PUT">PUT</option>
-			<option value="DELETE">DELETE</option>
-			<option value="GET">GET</option>
-		</select>
-	</label>
-	<br>
-	<label>
-		URL
-		<input type="text" ng-model="form.url"></label>
-	</label>
-	<br>
-	<label>
-		Body (JSON)<br>
-		<textarea ng-model="form.body"></textarea>
-	</label>
-	<br>
-	<button type="submit">Send Request</button>
-</form>
+		#new {
+		}
+	</style>
+</head>
+<body ng-controller="mainCtrl">
+
+	<form ng-repeat="call in calls" ng-controller="adjureFormCtrl" ng-submit="submit()">
+		<label>
+			Method
+			<select ng-model="call.method">
+				<option value="POST">POST</option>
+				<option value="PUT">PUT</option>
+				<option value="DELETE">DELETE</option>
+				<option value="GET">GET</option>
+			</select>
+		</label>
+		<br>
+		<label>
+			URL
+			<input type="text" ng-model="call.url"></label>
+		</label>
+		<br>
+		<label>
+			Body (JSON)<br>
+			<textarea ng-model="call.body"></textarea>
+		</label>
+		<br>
+		<button type="submit">Send Request</button>
+	</form>
+	<button id="new" ng-click="createNewCall()">new</button> <br>
+	<button id="new" ng-click="saveAll()">Save All</button>
 
 <!-- angular -->
 <script>
@@ -41,10 +55,68 @@
 <script>
 	angular.module('adjure', [])
 
-	.controller('adjureFormCtrl', ['$scope', '$http', function($scope, $http){
+	.run(['$rootScope', 'LocalStore', function($rootScope, LocalStore){
+		$rootScope.calls = LocalStore.model();
+		LocalStore.load();
+	}])
+
+	.factory('LocalStore', [function(){
+		
+		var LocalStore = {};
+
+		//class for calls
+		var call = function() {
+			this.url = '/';
+			this.method = 'POST';
+			this.body = '{"key": "String"}';
+		};
+
+		//the array of calls
+		var workingCopy = [];
+		LocalStore.model = function() {
+			return workingCopy
+		};
+
+		//load any calls in local stroage. This is called once when the page loads.
+		LocalStore.load = function() {
+			var loadedArray = angular.fromJson(localStorage.getItem('adjure'));
+			if (loadedArray) {
+				var length = loadedArray.length;
+				for (var i = 0; i < length; i++) {
+					LocalStore.new(loadedArray.shift());
+				}
+			}
+		}
+
+		//save all the on screen calls to local storage.
+		LocalStore.save = function() {
+			var saveString = angular.toJson(workingCopy);
+			localStorage.setItem('adjure', saveString);
+		};
+
+		//creates a new call and places it on screen.
+		LocalStore.new = function(obj) {
+			var tempCall = new call();
+			angular.extend(tempCall, obj);
+			workingCopy.push(tempCall);
+		};	
+
+		return LocalStore;
+	}])
+
+	.controller('mainCtrl', ['$scope', 'LocalStore', function($scope, LocalStore){
+		$scope.createNewCall = function() {
+			LocalStore.new();
+		}
+
+		$scope.saveAll = function() {
+			LocalStore.save();
+		}
+	}])
+
+	.controller('adjureFormCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http){
 		$scope.submit = function() {
-			console.debug($scope.form);
-			$http({method: $scope.form.method, url: $scope.form.url, data: angular.fromJson($scope.form.body)});
+			$http({method: $scope.call.method, url: $scope.call.url, data: angular.fromJson($scope.call.body)});
 			return false;
 		};
 	}]);
