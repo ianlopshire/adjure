@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Adjure</title>
+	<link rel="stylesheet" type="text/css" href="assets/css/screen.css">
+	<script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+	<script type="text/javascript" src="bower_components/handlebars/handlebars.runtime.js"></script>
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/adjure.js"></script>
+</head>
+<body>
+	<script id="calls-template" type="text/x-handlebars-template">
+		{{#each calls}}
+		<section class="call column s-12 m-6 xl-4" data-index="{{@index}}">
+			<div class="box">
+				<header>
+					<h1 id="title{{@index}}" class="classField" contentEditable="true">{{title}}</h1>
+				</header>
+				<form id="call{{@index}}">
+					{{methodSelect method @index}}
+					{{input @index "url" url "URL"}}
+					{{textarea @index "data" data "Request Body (JSON)"}}
+				</form>
+				<div class="button-group">
+					<button onclick="Adjure.runCall({{@index}})">Run Call</button>
+					<button onClick="Adjure.saveOne({{@index}})">Save</button>
+					<button onClick="Adjure.delete({{@index}})">Delete</button>
+				</div>
+			</div>
+		</section>
+		{{/each}}
+	</script>
+
+	<aside id="side-bar-js" class="side-bar">
+		<header class="side-bar-header">
+			<h1>Adjure</h1>
+			<h2>Simple Api Testing</h2>
+		</header>
+		<div class="side-bar-controlls">
+			<!--<input type="text" placeholder="Search">-->
+			<div class="button-group">
+				<button id="new-call-js">New</button>
+				<button id="save-all-js">Save All</button>
+			</div>
+		</div>
+		<p class="about-info">Abjure is an open source tool developed under the MIT license</p>
+	</aside>
+
+	<div id="body-js" class="calls row">
+	</div>
+
+<script type="text/javascript">
+	Handlebars.registerHelper('methodSelect', function(inMethod, index){
+		var methods=["GET", "POST", "PUT", "DELETE", "UPDATE"];
+
+		var html = "<select class='classField' id='method"+index+"'>"
+
+		methods.forEach(function(element){
+			html += "<option vale='"+element+"' ";
+			if(element == inMethod){
+				html += "selected";
+			}
+			html += ">"+element+"</option>";
+		});
+
+		html += "</select>";
+
+		return new Handlebars.SafeString(html);
+	});
+
+	Handlebars.registerHelper('input', function(index, id, value, inPlaceholder, inType){
+		var placeholder = typeof inPlaceholder == "string" ? inPlaceholder : " ",
+			type = typeof inType == "string" ? inType : "text";
+
+		var html = "<input class='classField' type='"+type+"' value='"+value+"' id='"+id+index+"' placeholder='"+placeholder+"'>";
+
+		return new Handlebars.SafeString(html);
+	});
+
+	Handlebars.registerHelper('textarea', function(index, id, value, inPlaceholder){
+		var placeholder = typeof inPlaceholder == "string" ? inPlaceholder : " ";
+
+		var html = "<textarea class='classField' id='"+id+index+"' placeholder='"+placeholder+"'>"+JSON.stringify(value)+"</textarea>";
+
+		return new Handlebars.SafeString(html);
+	});
+
+	window.Adjure = {};
+
+	Adjure.defaultCall = {
+		title: "New call",
+		method: "GET",
+		url: "/api/test",
+		data: {
+			key: "value"
+		}
+	};
+
+	Adjure.currentData = {
+		calls: []
+	};
+
+	Adjure.storedData = {
+		calls: []
+	};
+
+	Adjure.init = function(){
+		var source = $("#calls-template").html();
+		Adjure.callsTemplate = Handlebars.compile(source);
+		Adjure.load();
+	};
+
+	Adjure.renderLoop = function(){
+		var html = Adjure.callsTemplate(Adjure.currentData);
+		$('#body-js').html(html);
+	};
+
+	Adjure.new = function(){
+		Adjure.currentData.calls.push(Adjure.defaultCall);
+		Adjure.storedData.calls.push(Adjure.defaultCall);
+		Adjure.renderLoop();
+	}
+
+	Adjure.runCall = function(index){
+		var url = Adjure.currentData.calls[index].url,
+			method = Adjure.currentData.calls[index].method,
+			data = Adjure.currentData.calls[index].data;
+
+		$.ajax({
+			url: url,
+			content: data,
+			type: method
+		})
+	}
+
+	Adjure.syncCall = function(index){
+		var callObject = {
+			title: $("#title"+index).html().toString(),
+			method: $("#method"+index).val(),
+			url: $("#url"+index).val(),
+			data: JSON.parse($("#data"+index).val())
+		};
+
+		Adjure.currentData.calls[index] = callObject;
+	}
+
+	Adjure.load = function(){
+		var loaded = JSON.parse(localStorage.getItem("adjure-data-store"));
+
+		if(loaded != null && Array.isArray(loaded)){
+			loaded.forEach(function(element){
+				Adjure.currentData.calls.push(element);
+				Adjure.storedData.calls.push(element);
+			});
+		}
+
+
+		if(Adjure.currentData.calls.length == 0){
+			Adjure.currentData.calls[0] = Adjure.defaultCall;
+			Adjure.storedData.calls[0] = Adjure.defaultCall;
+		}
+	};
+
+	Adjure._save = function(){
+		localStorage.setItem("adjure-data-store", JSON.stringify(Adjure.storedData.calls));
+	}
+
+	Adjure.delete = function(index){
+		Adjure.currentData.calls.splice(index, 1);
+		Adjure.storedData.calls.splice(index, 1);
+		Adjure._save();
+		Adjure.renderLoop();
+	}
+
+	Adjure.saveAll = function(){
+		Adjure.storedData.calls = Adjure.currentData.calls;
+		Adjure._save();
+	};
+
+	Adjure.saveOne = function(index){
+		console.log(Adjure.storedData.calls);
+		console.log(Adjure.currentData.calls);
+		Adjure.storedData.calls[index] = Adjure.currentData.calls[index];
+		Adjure._save();
+		console.log(Adjure.storedData.calls);
+		console.log(Adjure.currentData.calls);
+	};
+
+	Adjure._getIndex = function(target){
+		return $(target).parents(".call").attr("data-index");
+	}
+
+	Adjure.init();
+	Adjure.renderLoop();
+
+	$("#new-call-js").on('click', function(){
+		Adjure.new();
+	});
+
+	$("#save-all-js").on('click', function(){
+		Adjure.saveAll();
+	});
+
+	$("#body-js").on('change', '.classField', function(e){
+		var index = Adjure._getIndex(e.target);
+		Adjure.syncCall(index);
+	});
+
+
+
+
+</script>
+
+</body>
+</html>
