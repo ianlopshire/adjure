@@ -1,0 +1,21 @@
+{
+  "name": "adjure",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ianlopshire/adjure",
+  "authors": [
+    "Ian Lopshire <ianlopshire@me.com>"
+  ],
+  "description": "Simple Api Testing",
+  "main": "adjure.html",
+  "keywords": [
+    "API",
+    "Adjure"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "monomr": "https://github.com/monomr/monomr.git#~0.1.0",
+    "jquery": "~2.1.3",
+    "handlebars": "~2.0.0"
+  }
+}

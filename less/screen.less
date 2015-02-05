@@ -1,0 +1,163 @@
+@import '../bower_components/monomr/monor.less';
+
+@mq-break1: 46em;
+@mq-break2: 68em;
+@mq-break3: 85em;
+
+@background: #efefef;
+@foreground: #fdfdfd;
+
+body {
+	background: @background;
+	color: #000;
+	margin: 0;
+	padding: 0;
+	font-family: 'Oxygen', Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+	margin: 10px 20px;
+	font-weight: 400;
+}
+
+.side-bar {
+	box-shadow: 0px 0px 5px #888888;
+	background: @foreground;
+	&:after {
+		content: "";
+		display:table;
+		clear: both;
+	}
+
+	header {
+		border-bottom: #d3d3d3 solid 5px;
+		padding-bottom: 10px;
+	}
+
+	h1 {
+		padding: 0;
+		font-size: 48px;
+		font-weight: 600;
+	}
+	h2 {
+		padding: 0;
+		font-size: 18px;
+	}
+
+	&:before{
+		content: "";
+		display: table;
+	}
+}
+
+.about-info {
+	color: #747474;
+	font-size: 14px;
+	padding: 0;
+	margin: 20px;
+}
+
+.calls {
+	padding: 5px;
+}
+
+.call {
+	.box {
+		margin: 10px;
+		background: #fdfdfd;
+		box-shadow: 0px 0px 5px #888888;
+
+		&:before, &:after {
+			content: "";
+			display: table;
+		}
+	}
+
+	header {
+		background: #F5A623;
+		margin: 10px 0;
+		padding: 0;
+
+		h1 {
+			background: #fdfdfd;
+			margin: 0 20px;
+			display: inline-block;
+			padding: 0 10px;
+		}
+	}
+
+	form {
+		padding: 0 10px;
+	}
+
+	input, textarea, select {
+		width: 100%;
+		box-sizing: border-box;
+		margin: 10px 0;
+	}
+
+	textarea {
+		height: 140px;
+	}
+}
+
+button, input, select {
+	margin: 10px;
+	display: block;
+	padding: 0 8px;
+	font-size: 14px;
+	line-height: 1;
+	border-radius: 5px;
+	border: 1px solid #d3d3d3;
+	background: #d3d3d3;
+	height: 28px;
+	vertical-align: middle;
+}
+
+textarea {
+	margin: 10px;
+	display: block;
+	padding: 8px;
+	font-size: 14px;
+	line-height: 1.2;
+	border-radius: 5px;
+	border: 1px solid #d3d3d3;
+	background: #d3d3d3;
+}
+
+input, textarea, select {
+	background: #efefef;
+}
+
+.side-bar-controlls {
+	padding: 10px 5px;
+}
+
+.button-group {
+	button {
+		float: left;
+		margin-top: 0;
+		margin-right: 0;
+	}
+
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+
+@media @mq-l {
+	.side-bar {
+		width: 300px;
+		height: calc(100%);
+		position: fixed;
+		top: 0;
+		left: 0;
+	}
+	.calls {
+		width: (100% - 300px);
+		margin-left: 300px;
+	}
+}
