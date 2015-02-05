@@ -43,6 +43,15 @@ gulp.task('less', function () {
 		.pipe(gulp.dest(lessDestPath)).on('error', lessError);
 });
 
+gulp.task('dependencies', function (){
+    gulp.src('./bower_components/handlebars/handlebars.js')
+        .pipe(gulp.dest("./assets/vendor/"));
+    gulp.src('./bower_components/handlebars/handlebars.runtime.js')
+        .pipe(gulp.dest("./assets/vendor/"));
+    gulp.src('./bower_components/jquery/dist/jquery.js')
+        .pipe(gulp.dest("./assets/vendor/"));
+});
+
 gulp.task('watch', function() {
 	gulp.watch(lessWatchPath, ['less']);
 });
