@@ -1,26 +1,18 @@
 #Adjure
 
-Adjure Is a single html file that can be dropped into a project to test rest api’s. The idea is to run the request and then use the Chrome dev tools to debug.
+Adjure is a simple system to test url API's. Adjure simply allows you to send a request. You can then use the browser dev tools to examine the network activity and see all information about the request.
+
+####Features include
+ - Multiple request types: GET, POST, PUT, DELETE, UPDATE
+ - Save requests for later use
+ - Add a JSON body to the request
 
 ##Road Map
 
-####~~Sprint 1~~
-- ~~basic functionality~~
+###2.1.0
+ - search requests
+ - unsaved indicator
 
-----
-
-####~~Sprint 2~~
-- ~~saving requests with local storage~~
-- ~~multiple requests on the page~~
-
-----
-
-####Sprint 3
-- save/delete individual calls
-
------
-
-####Sprint 4
-- styling
-
------
+###2.2.0
+ - categorize requests
+ - parse JSON body into url variables on GET requests
