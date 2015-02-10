@@ -164,3 +164,9 @@ $("#body-js").on('click', '.call-delete-js', function(e){
     var index = Adjure._getIndex(e.target);
     Adjure.delete(index);
 });
+
+$("#body-js").on('blur paste input', '.content-editable-js', function(e){
+    var index = Adjure._getIndex(e.target);
+    Adjure.syncCall(index);
+    console.log("title changed");
+})
