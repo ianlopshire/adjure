@@ -77,12 +77,24 @@ p, h1, h2, h3, h4, h5, h6 {
 		background: #F5A623;
 		margin: 10px 0;
 		padding: 0;
+		position: relative;
 
 		h1 {
 			background: #fdfdfd;
 			margin: 0 20px;
 			display: inline-block;
 			padding: 0 10px;
+		}
+
+		.is-dirty-marker {
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 0;
+			height: 8px;
+			width: 8px;
+			margin: 5px;
+			background: #fdfdfd;
 		}
 	}
 

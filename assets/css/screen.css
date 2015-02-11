@@ -407,12 +407,23 @@ h6 {
   background: #F5A623;
   margin: 10px 0;
   padding: 0;
+  position: relative;
 }
 .call header h1 {
   background: #fdfdfd;
   margin: 0 20px;
   display: inline-block;
   padding: 0 10px;
+}
+.call header .is-dirty-marker {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 8px;
+  width: 8px;
+  margin: 5px;
+  background: #fdfdfd;
 }
 .call form {
   padding: 0 10px;

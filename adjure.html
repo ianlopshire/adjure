@@ -14,6 +14,9 @@
 			<div class="box">
 				<header>
 					<h1 id="title{{@index}}" class="classField content-editable-js" contentEditable="true">{{title}}</h1>
+					{{#if isDirty}}
+						<span title="unsaved" class="is-dirty-marker is-dirty-js"></span>
+					{{/if}}
 				</header>
 				<form id="call{{@index}}">
 					{{methodSelect method @index}}

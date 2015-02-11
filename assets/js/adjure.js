@@ -41,7 +41,8 @@ Adjure.defaultCall = {
     url: "/api/test",
     data: {
         key: "value"
-    }
+    },
+    isDirty: true
 };
 
 Adjure.currentData = {
@@ -66,7 +67,7 @@ Adjure.renderLoop = function(){
 
 Adjure.new = function(){
     Adjure.currentData.calls.push(Adjure.defaultCall);
-    Adjure.storedData.calls.push(Adjure.defaultCall);
+    //Adjure.storedData.calls.push(Adjure.defaultCall);
     Adjure.renderLoop();
 }
 
@@ -83,14 +84,21 @@ Adjure.runCall = function(index){
 }
 
 Adjure.syncCall = function(index){
+
     var callObject = {
         title: $("#title"+index).html().toString(),
         method: $("#method"+index).val(),
         url: $("#url"+index).val(),
-        data: JSON.parse($("#data"+index).val())
+        data: JSON.parse($("#data"+index).val()),
+        isDirty: true
     };
 
-    Adjure.currentData.calls[index] = callObject;
+    if(Adjure.currentData.calls[index].isDirty){
+        Adjure.currentData.calls[index] = callObject;
+    } else {
+        Adjure.currentData.calls[index] = callObject;
+        Adjure.renderLoop();
+    }
 }
 
 Adjure.load = function(){
@@ -122,13 +130,27 @@ Adjure.delete = function(index){
 }
 
 Adjure.saveAll = function(){
-    Adjure.storedData.calls = Adjure.currentData.calls;
-    Adjure._save();
+    var needUpdate = false;
+    Adjure.currentData.calls.forEach(function(item){
+        if(!needUpdate && item.isDirty){
+            needUpdate = true;
+        }
+        item.isDirty = false;
+    });
+    if (needUpdate) {
+        Adjure.storedData.calls = Adjure.currentData.calls;
+        Adjure._save();
+        Adjure.renderLoop();
+    }
 };
 
 Adjure.saveOne = function(index){
-    Adjure.storedData.calls[index] = Adjure.currentData.calls[index];
-    Adjure._save();
+    if(Adjure.currentData.calls[index].isDirty) {
+        Adjure.currentData.calls[index].isDirty = false;
+        Adjure.storedData.calls[index] = Adjure.currentData.calls[index];
+        Adjure._save();
+        Adjure.renderLoop();
+    }
 };
 
 Adjure._getIndex = function(target){
@@ -165,7 +187,7 @@ $("#body-js").on('click', '.call-delete-js', function(e){
     Adjure.delete(index);
 });
 
-$("#body-js").on('blur paste input', '.content-editable-js', function(e){
+$("#body-js").on('blur paste', '.content-editable-js', function(e){
     var index = Adjure._getIndex(e.target);
     Adjure.syncCall(index);
     console.log("title changed");
