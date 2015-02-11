@@ -480,6 +480,9 @@ select {
   display: table;
   clear: both;
 }
+.hide {
+  display: none !important;
+}
 @media (min-width: 68em) {
   .side-bar {
     width: 300px;

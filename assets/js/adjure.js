@@ -97,7 +97,7 @@ Adjure.syncCall = function(index){
         Adjure.currentData.calls[index] = callObject;
     } else {
         Adjure.currentData.calls[index] = callObject;
-        Adjure.renderLoop();
+        Adjure.setIsDirtyMarker(index, true);
     }
 }
 
@@ -148,8 +148,18 @@ Adjure.saveOne = function(index){
     if(Adjure.currentData.calls[index].isDirty) {
         Adjure.currentData.calls[index].isDirty = false;
         Adjure.storedData.calls[index] = Adjure.currentData.calls[index];
-        Adjure._save();
-        Adjure.renderLoop();
+        Adjure._save
+        Adjure.setIsDirtyMarker(index, false)
+    }
+};
+
+Adjure.setIsDirtyMarker = function(index, isDirty) {
+    isDirtyMarker = $("#is-dirty"+index);
+
+    if(isDirty) {
+        isDirtyMarker.removeClass("hide");
+    } else {
+        isDirtyMarker.addClass("hide");
     }
 };
 
@@ -167,7 +177,7 @@ $("#save-all-js").on('click', function(){
     Adjure.saveAll();
 });
 
-$("#body-js").on('change', '.classField', function(e){
+$("#body-js").on('change input', '.classField', function(e){
     var index = Adjure._getIndex(e.target);
     Adjure.syncCall(index);
 });
@@ -187,7 +197,7 @@ $("#body-js").on('click', '.call-delete-js', function(e){
     Adjure.delete(index);
 });
 
-$("#body-js").on('blur paste', '.content-editable-js', function(e){
+$("#body-js").on('blur paste input', '.content-editable-js', function(e){
     var index = Adjure._getIndex(e.target);
     Adjure.syncCall(index);
     console.log("title changed");
