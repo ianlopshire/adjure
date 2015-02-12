@@ -75,6 +75,14 @@ Adjure.runCall = function(index){
     var url = Adjure.currentData.calls[index].url,
         method = Adjure.currentData.calls[index].method,
         data = Adjure.currentData.calls[index].data;
+        
+        if(method === 'GET') {
+            url += '?';
+            $.each(data, function(key,value) {
+                url += key + '=' + value + '&';
+            });
+            url = url.substring(0,url.length-1);
+        }
 
     $.ajax({
         url: url,
