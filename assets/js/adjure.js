@@ -221,4 +221,4 @@ $("#body-js").on('blur paste input', '.content-editable-js', function(e){
     var index = Adjure._getIndex(e.target);
     Adjure.syncCall(index);
     console.log("title changed");
-})
+});
