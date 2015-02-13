@@ -96,7 +96,7 @@ Adjure.syncCall = function(index){
     var jsonData = Adjure.checkJson($('#data'+index).val());
 
     if(!jsonData) {
-        jsonData = Adjure.defaultCall.data;
+        jsonData = Adjure.currentData.calls[index].data;
     }
 
     var callObject = {
