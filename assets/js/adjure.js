@@ -39,9 +39,7 @@ Adjure.defaultCall = {
     title: "New call",
     method: "GET",
     url: "/api/test",
-    data: {
-        key: "value"
-    },
+    data: '{"key": "value"}',
     isDirty: true
 };
 
