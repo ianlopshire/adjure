@@ -93,11 +93,17 @@ Adjure.runCall = function(index){
 
 Adjure.syncCall = function(index){
 
+    var jsonData = Adjure.checkJson($('#data'+index).val());
+
+    if(!jsonData) {
+        jsonData = Adjure.defaultCall.data;
+    }
+
     var callObject = {
         title: $("#title"+index).html().toString(),
         method: $("#method"+index).val(),
         url: $("#url"+index).val(),
-        data: JSON.parse($("#data"+index).val()),
+        data: jsonData,
         isDirty: true
     };
 
@@ -106,6 +112,15 @@ Adjure.syncCall = function(index){
     } else {
         Adjure.currentData.calls[index] = callObject;
         Adjure.setIsDirtyMarker(index, true);
+    }
+}
+
+Adjure.checkJson = function(json) {
+    try {
+        var jsonData = JSON.parse(json);
+        return jsonData;
+    } catch(e) {
+        return false;
     }
 }
 
