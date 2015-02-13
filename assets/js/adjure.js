@@ -28,7 +28,7 @@ Handlebars.registerHelper('input', function(index, id, value, inPlaceholder, inT
 Handlebars.registerHelper('textarea', function(index, id, value, inPlaceholder){
     var placeholder = typeof inPlaceholder == "string" ? inPlaceholder : " ";
 
-    var html = "<textarea class='classField' id='"+id+index+"' placeholder='"+placeholder+"'>"+JSON.stringify(value)+"</textarea>";
+    var html = "<textarea class='classField' id='"+id+index+"' placeholder='"+placeholder+"'>"+value+"</textarea>";
 
     return new Handlebars.SafeString(html);
 });
@@ -74,15 +74,20 @@ Adjure.new = function(){
 Adjure.runCall = function(index){
     var url = Adjure.currentData.calls[index].url,
         method = Adjure.currentData.calls[index].method,
-        data = Adjure.currentData.calls[index].data;
+        data = Adjure.checkJson(Adjure.currentData.calls[index].data);
+
+    if(!data) {
+        alert('Invalid JSON. Please check your json format.');
+        return;
+    }
         
-        if(method === 'GET') {
-            url += '?';
-            $.each(data, function(key,value) {
-                url += key + '=' + value + '&';
-            });
-            url = url.substring(0,url.length-1);
-        }
+    if(method === 'GET') {
+        url += '?';
+        $.each(data, function(key,value) {
+            url += key + '=' + value + '&';
+        });
+        url = url.substring(0,url.length-1);
+    }
 
     $.ajax({
         url: url,
@@ -93,17 +98,11 @@ Adjure.runCall = function(index){
 
 Adjure.syncCall = function(index){
 
-    var jsonData = Adjure.checkJson($('#data'+index).val());
-
-    if(!jsonData) {
-        jsonData = Adjure.currentData.calls[index].data;
-    }
-
     var callObject = {
         title: $("#title"+index).html().toString(),
         method: $("#method"+index).val(),
         url: $("#url"+index).val(),
-        data: jsonData,
+        data: $("#data"+index).val(),
         isDirty: true
     };
 
