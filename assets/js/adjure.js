@@ -39,9 +39,7 @@ Adjure.defaultCall = {
     title: "New call",
     method: "GET",
     url: "/api/test",
-    data: {
-        key: "value"
-    },
+    data: JSON.stringify({key: "value"}),
     isDirty: true
 };
 
@@ -223,4 +221,4 @@ $("#body-js").on('blur paste input', '.content-editable-js', function(e){
     var index = Adjure._getIndex(e.target);
     Adjure.syncCall(index);
     console.log("title changed");
-})
+});
