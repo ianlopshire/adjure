@@ -156,7 +156,7 @@ Adjure.saveOne = function(index){
     if(Adjure.currentData.calls[index].isDirty) {
         Adjure.currentData.calls[index].isDirty = false;
         Adjure.storedData.calls[index] = Adjure.currentData.calls[index];
-        Adjure._save
+        Adjure._save();
         Adjure.setIsDirtyMarker(index, false)
     }
 };
