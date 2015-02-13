@@ -15,4 +15,4 @@ Adjure is a simple system to test url API's. Adjure simply allows you to send a 
 
 ###2.2.0
  - categorize requests
- - parse JSON body into url variables on GET requests
+ - ~~parse JSON body into url variables on GET requests~~
