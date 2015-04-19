@@ -72,7 +72,11 @@ Adjure.new = function(){
 Adjure.runCall = function(index){
     var url = Adjure.currentData.calls[index].url,
         method = Adjure.currentData.calls[index].method,
-        data = Adjure.checkJson(Adjure.currentData.calls[index].data);
+        data = Adjure.checkJson(Adjure.currentData.calls[index].data),
+        callData = {
+            url: url,
+            type: method
+        };
 
     if(!data) {
         alert('Invalid JSON. Please check your json format.');
@@ -82,16 +86,16 @@ Adjure.runCall = function(index){
     if(method === 'GET') {
         url += '?';
         $.each(data, function(key,value) {
-            url += key + '=' + value + '&';
+            if(!value.constructor === Array || !(typeof value === 'object')) //fixes error with serialization of objects and arrays to query parameters
+                url += key + '=' + value + '&';
         });
         url = url.substring(0,url.length-1);
+        callData.url = url;
+    } else {
+        callData.data = JSON.stringify(data);
     }
 
-    $.ajax({
-        url: url,
-        content: data,
-        type: method
-    })
+    $.ajax(callData);
 }
 
 Adjure.syncCall = function(index){
