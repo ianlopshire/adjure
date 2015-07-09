@@ -28,7 +28,7 @@ npm install -g bower gulp
 Then, clone the repo:
 
 ```bash
-clone https://github.com/ianlopshire/adjure.git
+git clone https://github.com/ianlopshire/adjure.git
 cd adjure/
 ```
 
