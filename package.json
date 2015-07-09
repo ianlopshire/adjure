@@ -1,6 +1,6 @@
 {
   "name": "adjure",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Simple API Testing",
   "main": "adjure.html",
   "dependencies": {},
@@ -8,12 +8,12 @@
     "chalk": "1.1.0",
     "del": "1.2.0",
     "gulp": "3.9.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-help": "^1.6.0",
+    "gulp-concat": "2.6.0",
+    "gulp-help": "1.6.0",
     "gulp-less": "3.0.3",
     "gulp-uglify": "1.2.0",
     "gulp-zip": "3.0.2",
-    "run-sequence": "^1.1.1"
+    "run-sequence": "1.1.1"
   },
   "repository": {
     "type": "git",
