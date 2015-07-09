@@ -21,7 +21,7 @@ var del      = require('del'),
     }),
 
     paths    = {
-        js: ['./bower_components/jquery/dist/jquery.js', './bower_components/handlebars/handlebars.js', './bower_components/handlebars/handlebars.runtime.js', './src/js/**/*.js'],
+        js: ['./bower_components/jquery/dist/jquery.js', './bower_components/handlebars/handlebars.js', './src/js/**/*.js'],
         css: ['./src/less/adjure.less']
     };
 
