@@ -15,7 +15,7 @@
   "private": true,
   "dependencies": {
     "monomr": "https://github.com/monomr/monomr.git#~0.1.0",
-    "jquery": "~2.1.3",
-    "handlebars": "~2.0.0"
+    "jquery": "2.1.3",
+    "handlebars": "3.0.3"
   }
 }
