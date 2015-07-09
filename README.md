@@ -9,8 +9,6 @@ Adjure is a simple system to test url API's. Adjure simply allows you to send a 
 
 # Quick Start Install
 
----
-
 To use the production version of Adjure, follow these steps:
 
 1. Download the [adjure.zip](https://github.com/ianlopshire/adjure/releases) from the latest release.
@@ -19,8 +17,6 @@ To use the production version of Adjure, follow these steps:
 4. Win!
 
 # Developer Install (from Git)
-
----
 
 Before you clone Adjure, make sure you have Node.js installed.
 Also, you need Bower and Gulp. To install them (once you have Node running), run this command:
